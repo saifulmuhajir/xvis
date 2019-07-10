@@ -4,20 +4,27 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 
 export class PlanService {
+    // Polpyheny properties
+    EXPRESSIONS = 'exprs';
+    AGGREGATIONS = 'aggs';
+    FIELDS = 'fields';
+    CONDITION = 'condition';
+    TABLE = 'table';
+
     // plan property keys
-    NODE_TYPE_PROP = 'Node Type';
-    ACTUAL_ROWS_PROP = 'Actual Rows';
+    NODE_TYPE_PROP = 'relOp';
+    ACTUAL_ROWS_PROP = 'rowcount'; // maybe rows cost
     PLAN_ROWS_PROP = 'Plan Rows';
-    ACTUAL_TOTAL_TIME_PROP = 'Actual Total Time';
+    ACTUAL_TOTAL_TIME_PROP = 'rows cost'; // was "Actual Total Time"
     ACTUAL_LOOPS_PROP = 'Actual Loops';
-    TOTAL_COST_PROP = 'Total Cost';
-    PLANS_PROP = 'Plans';
+    TOTAL_COST_PROP = 'io cost'; // was: "Total Cost"
+    PLANS_PROP = 'inputs';
     RELATION_NAME_PROP = 'Relation Name';
     SCHEMA_PROP = 'Schema';
     ALIAS_PROP = 'Alias';
-    GROUP_KEY_PROP = 'Group Key';
+    GROUP_KEY_PROP = 'group';
     SORT_KEY_PROP = 'Sort Key';
-    JOIN_TYPE_PROP = 'Join Type';
+    JOIN_TYPE_PROP = 'joinType';
     INDEX_NAME_PROP = 'Index Name';
     HASH_CONDITION_PROP = 'Hash Cond';
 
@@ -110,7 +117,7 @@ export class PlanService {
 
     // recursively walk down the plan to compute various metrics
     processNode(node) {
-        this.calculatePlannerEstimate(node);
+        // this.calculatePlannerEstimate(node);
         this.calculateActuals(node);
 
         _.each(node, (value, key) => {
@@ -142,13 +149,13 @@ export class PlanService {
         node[this.LARGEST_NODE_PROP] = false;
         node[this.COSTLIEST_NODE_PROP] = false;
 
-        if (node[this.ACTUAL_COST_PROP] === this._maxCost) {
+        if (node[this.ACTUAL_COST_PROP] === this._maxCost && this._maxCost > 0) {
             node[this.COSTLIEST_NODE_PROP] = true;
         }
-        if (node[this.ACTUAL_ROWS_PROP] === this._maxRows) {
+        if (node[this.ACTUAL_ROWS_PROP] === this._maxRows && this._maxRows > 0) {
             node[this.LARGEST_NODE_PROP] = true;
         }
-        if (node[this.ACTUAL_DURATION_PROP] === this._maxDuration) {
+        if (node[this.ACTUAL_DURATION_PROP] === this._maxDuration && this._maxDuration > 0) {
             node[this.SLOWEST_NODE_PROP] = true;
         }
 
@@ -182,7 +189,7 @@ export class PlanService {
         }
 
         // since time is reported for an invidual loop, actual duration must be adjusted by number of loops
-        node[this.ACTUAL_DURATION_PROP] = node[this.ACTUAL_DURATION_PROP] * node[this.ACTUAL_LOOPS_PROP];
+        // node[this.ACTUAL_DURATION_PROP] = node[this.ACTUAL_DURATION_PROP] * node[this.ACTUAL_LOOPS_PROP];
     }
 
     // figure out order of magnitude by which the planner mis-estimated how many rows would be

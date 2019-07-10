@@ -7,8 +7,11 @@
     <h4>{{getNodeName()}}</h4>
     <span *ngIf="viewOptions.viewMode === viewModes.FULL || showDetails">
          <span class="node-duration">{{node[_planService.ACTUAL_DURATION_PROP] | duration}}<span class="text-muted">{{node[_planService.ACTUAL_DURATION_PROP] | durationUnit}}
-           | </span><strong>{{executionTimePercent}}</strong>
+         </span>
+           <ng-container *ngIf="executionTimePercent">
+             | <strong>{{executionTimePercent}}</strong>
             <span class="text-muted">%</span>
+           </ng-container>
          </span>
       </span>
   </header>
@@ -19,18 +22,45 @@
   </button>
 
   <div *ngIf="viewOptions.viewMode === viewModes.FULL">
+
+    <div class="relation-name" *ngIf="node[_planService.JOIN_TYPE_PROP]">
+      <span class="text-muted">join: </span>
+      {{node[_planService.JOIN_TYPE_PROP]}}
+    </div>
+    <div class="relation-name" *ngIf="node[_planService.GROUP_KEY_PROP]">
+      <span class="text-muted">group: </span>
+      {{node[_planService.GROUP_KEY_PROP]}}
+    </div>
+
+    <div class="relation-name" *ngIf="node[_planService.FIELDS]">
+      <span class="text-muted">fields: </span>
+      <span>{{node[_planService.FIELDS]}}</span>
+    </div>
+    <div class="relation-name" *ngIf="node[_planService.EXPRESSIONS]">
+      <span class="text-muted">expressions: </span>
+      <span>{{node[_planService.EXPRESSIONS]}}</span>
+    </div>
+    <div class="relation-name" *ngIf="node[_planService.CONDITION]">
+      <span class="text-muted">condition: </span>
+      <span>{{node[_planService.CONDITION]}}</span>
+    </div>
+    <div class="relation-name" *ngIf="node[_planService.AGGREGATIONS]">
+      <span class="text-muted">aggs: </span>
+      <span>{{node[_planService.AGGREGATIONS]}}</span>
+    </div>
+    <div class="relation-name" *ngIf="node[_planService.TABLE]">
+      <span class="text-muted">table: </span>
+      <span>{{node[_planService.TABLE]}}</span>
+    </div>
+
     <div class="relation-name" *ngIf="node[_planService.RELATION_NAME_PROP]">
       <span class="text-muted">on </span>
       <span *ngIf="node[_planService.SCHEMA_PROP]">{{node[_planService.SCHEMA_PROP]}}.</span>{{node[_planService.RELATION_NAME_PROP]}}
       <span *ngIf="node[_planService.ALIAS_PROP]"> ({{node[_planService.ALIAS_PROP]}})</span>
     </div>
 
-    <div class="relation-name" *ngIf="node[_planService.GROUP_KEY_PROP]">
-      <span class="text-muted">by</span> {{node[_planService.GROUP_KEY_PROP]}}</div>
     <div class="relation-name" *ngIf="node[_planService.SORT_KEY_PROP]">
       <span class="text-muted">by</span> {{node[_planService.SORT_KEY_PROP]}}</div>
-    <div class="relation-name" *ngIf="node[_planService.JOIN_TYPE_PROP]">{{node[_planService.JOIN_TYPE_PROP]}}
-      <span class="text-muted">join</span></div>
     <div class="relation-name" *ngIf="node[_planService.INDEX_NAME_PROP]"><span class="text-muted">
          using</span> {{node[_planService.INDEX_NAME_PROP]}}</div>
     <div class="relation-name" *ngIf="node[_planService.HASH_CONDITION_PROP]"><span class="text-muted">
@@ -46,7 +76,7 @@
 
   <div *ngIf="currentHighlightType !== highlightTypes.NONE">
     <div class="node-bar-container">
-      <span class="node-bar" [style.width]="barWidth+'px'" [style.backgroundColor]="backgroundColor"></span>
+      <span class="node-bar" [style.width]="barWidth+'%'" [style.backgroundColor]="backgroundColor"></span>
     </div>
     <span class="node-bar-label" *ngIf="shouldShowNodeBarLabel()">
          <span class="text-muted">{{viewOptions.highlightType}}:</span> {{highlightValue | number:'.0-2'}}
@@ -83,8 +113,8 @@
 </div>
 
 
-<ul *ngIf="node.Plans">
-  <li *ngFor="let subNode of node.Plans">
+<ul *ngIf="node.inputs && node.inputs.length > 0">
+  <li *ngFor="let subNode of node.inputs">
     <app-plan-node [plan]="plan" [node]="subNode" [viewOptions]="viewOptions"></app-plan-node>
   </li>
 </ul>

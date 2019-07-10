@@ -3374,7 +3374,8 @@ nav .about {
 }
 
 .plan-node .relation-name {
-	text-align: left
+	text-align: left;
+	margin-bottom: 0.3em;
 }
 
 .plan-node .planner-estimate {
@@ -3477,7 +3478,7 @@ nav .about {
 }
 
 .menu {
-	width: 190px;
+	width: 210px;
 	height: 260px;
 	position: absolute;
 	font-size: 12px;

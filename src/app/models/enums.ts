@@ -2,7 +2,7 @@ export class HighlightType {
     static NONE = 'none';
     static DURATION = 'duration';
     static ROWS = 'rows';
-    static COST = 'cost';
+    static COST = 'io cost';
 }
 
 export enum EstimateDirection {

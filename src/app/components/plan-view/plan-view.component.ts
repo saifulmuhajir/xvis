@@ -22,7 +22,7 @@ export class PlanViewComponent implements OnInit {
   viewOptions: any = {
     showPlanStats: true,
     showHighlightBar: true,
-    showPlannerEstimate: true,
+    showPlannerEstimate: false,
     showTags: true,
     highlightType: HighlightType.NONE,
     viewMode: ViewMode.FULL
@@ -40,6 +40,7 @@ export class PlanViewComponent implements OnInit {
 
   initPlan() {
     this.plan = this._planService.createPlan( 'name', this.planObject, this.query);
+    console.log(this.plan);
 
     this.rootContainer = this.plan.content;
     this.plan.planStats = {

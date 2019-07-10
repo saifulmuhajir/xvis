@@ -138,23 +138,39 @@ export class PlanNodeComponent implements OnInit, DoCheck {
       this.barContainerWidth = this.EXPANDED_WIDTH;
     }
 
+
     switch (this.currentHighlightType) {
       case HighlightType.DURATION:
         this.highlightValue = (this.node[this._planService.ACTUAL_DURATION_PROP]);
-        this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxDuration) * this.barContainerWidth);
+        if ( this.plan.planStats.maxDuration === 0 ) {
+          this.barWidth = 0;
+        } else {
+          // this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxDuration) * this.barContainerWidth);
+          this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxDuration) * 100);
+        }
         break;
       case HighlightType.ROWS:
         this.highlightValue = (this.node[this._planService.ACTUAL_ROWS_PROP]);
-        this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxRows) * this.barContainerWidth);
+        if ( this.plan.planStats.maxRows === 0 ) {
+          this.barWidth = 0;
+        } else {
+          // this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxRows) * this.barContainerWidth);
+          this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxRows) * 100);
+        }
         break;
       case HighlightType.COST:
         this.highlightValue = (this.node[this._planService.ACTUAL_COST_PROP]);
-        this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxCost) * this.barContainerWidth);
+        if ( this.plan.planStats.maxCost === 0 ) {
+          this.barWidth = 0;
+        } else {
+          // this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxCost) * this.barContainerWidth);
+          this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxCost) * 100);
+        }
         break;
     }
 
-    if (this.barWidth < 1) {
-      this.barWidth = 1;
+    if (this.barWidth < 0) {
+      this.barWidth = 0;
     }
 
     this.backgroundColor = this._colorService.numberToColorHsl(1 - this.barWidth / this.barContainerWidth);
@@ -196,10 +212,12 @@ export class PlanNodeComponent implements OnInit, DoCheck {
 
   getNodeName() {
     if (this.viewOptions.viewMode === ViewMode.DOT && !this.showDetails) {
-      return this.node[this._planService.NODE_TYPE_PROP].replace(/[^A-Z]/g, '').toUpperCase();
+      // return this.node[this._planService.NODE_TYPE_PROP].replace(/[^A-Z]/g, '').toUpperCase();
+      return this.node[this._planService.NODE_TYPE_PROP].replace(/[^A-Z]/g, '');
     }
 
-    return (this.node[this._planService.NODE_TYPE_PROP]).toUpperCase();
+    // return (this.node[this._planService.NODE_TYPE_PROP]).toUpperCase();
+    return (this.node[this._planService.NODE_TYPE_PROP]);
   }
 
   getTagName(tagName: String) {

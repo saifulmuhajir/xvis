@@ -13,19 +13,12 @@ export class AppComponent implements OnInit {
   plan;
 
   ngOnInit() {
-    this.query = 'SELECT c.state,\n' +
-        '  cat.categoryname,\n' +
-        '  sum(o.netamount),\n' +
-        '  sum(o.totalamount)\n' +
-        'FROM customers c\n' +
-        '  INNER JOIN cust_hist ch ON c.customerid = ch.customerid\n' +
-        '  INNER JOIN orders o ON ch.orderid = o.orderid\n' +
-        '  INNER JOIN orderlines ol ON ol.orderid = o.orderid\n' +
-        '  INNER JOIN products p ON ol.prod_id = p.prod_id\n' +
-        '  INNER JOIN categories cat ON p.category = cat.category\n' +
-        'GROUP BY c.state, cat.categoryname\n' +
-        'ORDER BY c.state, sum(o.totalamount) DESC\n' +
-        'LIMIT 10 OFFSET 1';
-    this.plan = plan.default[0];
+    this.query = 'SELECT d.deptno, d.name, sum(e.salary), sum(e.commission), count(e.empid)\n' +
+        'FROM csv.depts d\n' +
+        'INNER JOIN csv.emps e ON e.deptno = d.deptno\n' +
+        'WHERE e.commission > 0 OR e.salary > 1000\n' +
+        'GROUP BY d.deptno, d.name';
+    this.plan = plan.default;
+    console.log(this.plan);
   }
 }
