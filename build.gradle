@@ -1,0 +1,84 @@
+
+group 'ch.unibas.dmi.dbis.polyphenydb'
+
+version '1.0'
+
+description = "Polypheny-DB Explain Visualizer"
+
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+		classpath "com.moowork.gradle:gradle-node-plugin:1.3.1"
+    }
+}
+
+
+repositories {
+    maven {
+        // DBIS Artifactory
+        url 'https://dbis-artifactory.dmi.unibas.ch/maven2/'
+    }
+    flatDir {
+        dirs 'libs'
+    }
+    mavenCentral()
+    jcenter()
+}
+
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'com.moowork.node'
+
+
+
+dependencies {
+    
+}
+
+
+node {
+  version = '11.14.0'
+  npmVersion = '6.7.0'
+  download = true
+}
+
+
+
+npmInstall.args = ['--package-lock']
+
+npm_run_build.dependsOn(npmInstall)
+
+jar.dependsOn(npm_run_build)
+
+jar {
+  from 'dist' into 'webapp'
+  
+  manifest {
+        attributes "Manifest-Version": "1.0"
+        attributes "Copyright": "Databases and Information Systems Group, Department Mathematics and Computer Science, University of Basel, Switzerland"
+        attributes "Version": "$version"
+    }
+}
+
+
+artifacts {
+    archives jar
+}
+
+
+//clean.dependsOn(npm_cache_clean)
+
+clean {
+    delete "/dist"
+	delete "/build"
+	delete "/node_modules"
+}
