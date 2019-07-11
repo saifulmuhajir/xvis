@@ -1,5 +1,5 @@
 {
-  "name": "polypheny-db-explain-visualizer",
+  "name": "@polypheny-db/polypheny-db-explain-visualizer",
   "version": "0.1.0",
   "scripts": {
     "ng": "ng",
@@ -9,9 +9,11 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "author": "DBIS, University of Basel"
-  "license": "MIT"
-  "private": true,
+  "author": "DBIS, University of Basel",
+  "license": "MIT",
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com/"
+  },
   "dependencies": {
     "@angular/animations": "^6.1.0",
     "@angular/common": "^6.1.0",
