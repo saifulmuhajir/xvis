@@ -30,6 +30,7 @@ node_modules
 .idea
 .vscode
 
+# compiled output
 dist
 dev
 docs
@@ -37,3 +38,18 @@ lib
 test
 tools/typings/tsd
 tmp
+out-tsc
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Gradle
+.gradle/
+
+# build
+/build/

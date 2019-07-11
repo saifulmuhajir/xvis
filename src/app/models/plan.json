@@ -1,0 +1,69 @@
+{
+  "Plan": {
+    "id": "5",
+    "relOp": "LogicalAggregate",
+    "group": "{0, 1}",
+    "aggs": "[SUM(salary), SUM(commission), COUNT(empid)]",
+    "rowcount": 37.5,
+    "rows cost": 2502.5000035762787,
+    "cpu cost": 3577.0,
+    "io cost": 10.0,
+    "inputs": [
+      {
+        "id": "4",
+        "relOp": "LogicalProject",
+        "fields": "[DEPTNO, NAME, salary, commission, empid]",
+        "exprs": "[deptno, name, salary, commission, empid]",
+        "rowcount": 375.0,
+        "rows cost": 2450.0,
+        "cpu cost": 3577.0,
+        "io cost": 5.0,
+        "inputs": [
+          {
+            "id": "3",
+            "relOp": "LogicalFilter",
+            "condition": "OR(>(commission, 0), >(salary, 1000))",
+            "rowcount": 375.0,
+            "rows cost": 2075.0,
+            "cpu cost": 1702.0,
+            "io cost": 23.0,
+            "inputs": [
+              {
+                "id": "2",
+                "relOp": "LogicalJoin",
+                "condition": "=(deptno, deptno)",
+                "joinType": "inner",
+                "rowcount": 1500.0,
+                "rows cost": 1700.0,
+                "cpu cost": 202.0,
+                "io cost": 17.0,
+                "inputs": [
+                  {
+                    "id": "0",
+                    "relOp": "LogicalTableScan",
+                    "table": "[CSV, depts]",
+                    "rowcount": 100.0,
+                    "rows cost": 100.0,
+                    "cpu cost": 101.0,
+                    "io cost": 9.0,
+                    "inputs": []
+                  },
+                  {
+                    "id": "1",
+                    "relOp": "LogicalTableScan",
+                    "table": "[CSV, emps]",
+                    "rowcount": 100.0,
+                    "rows cost": 100.0,
+                    "cpu cost": 101.0,
+                    "io cost": 22.0,
+                    "inputs": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
