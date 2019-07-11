@@ -7,7 +7,6 @@ import {PlanService} from '../../services/plan-service';
   selector: 'app-plan-view',
   templateUrl: './plan-view.component.html',
   styleUrls: ['./plan-view.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class PlanViewComponent implements OnInit {
 
@@ -15,7 +14,6 @@ export class PlanViewComponent implements OnInit {
   plan: IPlan;
   rootContainer: any;
   hideMenu = true;
-  editName = false;
   @Input() query;
   @Input() planObject;
 
@@ -29,7 +27,6 @@ export class PlanViewComponent implements OnInit {
   };
 
   showPlannerEstimate = true;
-  showMenu = false;
 
   highlightTypes = HighlightType; // exposing the enum to the view
   viewModes = ViewMode;
@@ -40,7 +37,6 @@ export class PlanViewComponent implements OnInit {
 
   initPlan() {
     this.plan = this._planService.createPlan( 'name', this.planObject, this.query);
-    console.log(this.plan);
 
     this.rootContainer = this.plan.content;
     this.plan.planStats = {

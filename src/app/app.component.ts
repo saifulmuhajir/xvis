@@ -19,6 +19,5 @@ export class AppComponent implements OnInit {
         'WHERE e.commission > 0 OR e.salary > 1000\n' +
         'GROUP BY d.deptno, d.name';
     this.plan = plan.default;
-    console.log(this.plan);
   }
 }

@@ -5,7 +5,7 @@
 
   <header (click)="showDetails = !showDetails" tooltip="view node details">
     <h4>{{getNodeName()}}</h4>
-    <span *ngIf="viewOptions.viewMode === viewModes.FULL || showDetails">
+    <!--<span *ngIf="viewOptions.viewMode === viewModes.FULL || showDetails">
          <span class="node-duration">{{node[_planService.ACTUAL_DURATION_PROP] | duration}}<span class="text-muted">{{node[_planService.ACTUAL_DURATION_PROP] | durationUnit}}
          </span>
            <ng-container *ngIf="executionTimePercent">
@@ -13,13 +13,15 @@
             <span class="text-muted">%</span>
            </ng-container>
          </span>
-      </span>
+      </span>-->
   </header>
 
+  <!--
   <button *ngIf="plan.query && viewOptions.viewMode === viewModes.FULL" tooltip="view corresponding query"
           class="btn btn-sm btn-default btn-slim pull-right" (click)="showQuery = !showQuery">
     <i class="fa fa-database"></i>
   </button>
+  -->
 
   <div *ngIf="viewOptions.viewMode === viewModes.FULL">
 
@@ -100,7 +102,7 @@
         <td>{{prop.value}}</td>
       <tr>
     </table>
-    <div class="text-muted pad-top align-right"><em>*Pev calculated value</em></div>
+    <div class="text-muted pad-top align-right"><em>* calculated value</em></div>
   </div>
 
   <div *ngIf="showQuery" class="plan-query-container">

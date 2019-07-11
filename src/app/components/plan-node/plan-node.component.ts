@@ -11,7 +11,6 @@ import * as _ from 'lodash';
   selector: 'app-plan-node',
   templateUrl: './plan-node.component.html',
   styleUrls: ['./plan-node.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class PlanNodeComponent implements OnInit, DoCheck {
 
