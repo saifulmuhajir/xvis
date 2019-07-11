@@ -1,6 +1,6 @@
 {
-  "name": "explain-visualizer",
-  "version": "0.0.0",
+  "name": "polypheny-db-explain-visualizer",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,6 +9,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "author": "DBIS, University of Basel"
+  "license": "MIT"
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.0",
