@@ -22,7 +22,7 @@ export class PlanNodeComponent implements OnInit, DoCheck {
 
   MIN_ESTIMATE_MISS = 100;
   COSTLY_TAG = 'costliest';
-  SLOW_TAG = 'slowest';
+  MOST_CPU = 'most cpu';
   LARGE_TAG = 'largest';
   ESTIMATE_TAG = 'bad estimate';
 
@@ -70,7 +70,7 @@ export class PlanNodeComponent implements OnInit, DoCheck {
     this.calculateTags();
 
     this.plannerRowEstimateDirection = this.node[this._planService.PLANNER_ESIMATE_DIRECTION];
-    this.plannerRowEstimateValue = _.round(this.node[this._planService.PLANNER_ESTIMATE_FACTOR]);
+    this.plannerRowEstimateValue = _.round(this.node[this._planService.PLANNER_ESTIMATE_FACTOR], 1);
   }
 
   ngDoCheck() {
@@ -139,13 +139,13 @@ export class PlanNodeComponent implements OnInit, DoCheck {
 
 
     switch (this.currentHighlightType) {
-      case HighlightType.DURATION:
-        this.highlightValue = (this.node[this._planService.ACTUAL_DURATION_PROP]);
-        if ( this.plan.planStats.maxDuration === 0 ) {
+      case HighlightType.CPU:
+        this.highlightValue = (this.node[this._planService.ACTUAL_CPU_PROP]);
+        if ( this.plan.planStats.maxCpu === 0 ) {
           this.barWidth = 0;
         } else {
           // this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxDuration) * this.barContainerWidth);
-          this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxDuration) * 100);
+          this.barWidth = Math.round((this.highlightValue / this.plan.planStats.maxCpu) * 100);
         }
         break;
       case HighlightType.ROWS:
@@ -191,8 +191,8 @@ export class PlanNodeComponent implements OnInit, DoCheck {
 
   calculateTags() {
     this.tags = [];
-    if (this.node[this._planService.SLOWEST_NODE_PROP]) {
-      this.tags.push(this.SLOW_TAG);
+    if (this.node[this._planService.MOST_CPU_NODE_PROP]) {
+      this.tags.push(this.MOST_CPU);
     }
     if (this.node[this._planService.COSTLIEST_NODE_PROP]) {
       this.tags.push(this.COSTLY_TAG);

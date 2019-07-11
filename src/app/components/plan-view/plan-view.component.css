@@ -1,90 +1,11 @@
 @import url(../../../assets/css/styles.css);
 
-.plan ul {
-	display: flex;
-	padding: 12px 0 0 0;
-	position: relative;
-	margin: auto;
-	transition: all 0.5s;
-	margin-top: -5px
-}
-
-.plan ul .plan ul::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 50%;
-	border-left: 2px solid #c4c4c4;
-	height: 12px;
-	width: 0
-}
-
-.plan ul li {
-	float: left;
-	text-align: center;
-	list-style-type: none;
-	position: relative;
-	padding: 12px 3px 0 3px;
-	transition: all 0.5s
-}
-
-.plan ul li:before,
-.plan ul li:after {
-	content: '';
-	position: absolute;
-	top: 0;
-	right: 50%;
-	border-top: 2px solid #c4c4c4;
-	width: 50%;
-	height: 12px
-}
-
-.plan ul li:after {
-	right: auto;
-	left: 50%;
-	border-left: 2px solid #c4c4c4
-}
-
-.plan ul li:only-child {
-	padding-top: 0
-}
-
-.plan ul li:only-child:after,
-.plan ul li:only-child:before {
-	display: none
-}
-
-.plan ul li:first-child::before,
-.plan ul li:last-child::after {
-	border: 0 none
-}
-
-.plan ul li:last-child::before {
-	border-right: 2px solid #c4c4c4;
-	border-radius: 0 6px 0 0
-}
-
-.plan ul li:first-child::after {
-	border-radius: 6px 0 0 0
-}
-
-.plan ul li .plan-node:hover+.plan ul::before {
-	border-color: #00B5E2
-}
-
-.plan ul li .plan-node:hover+.plan ul li::after,
-.plan ul li .plan-node:hover+.plan ul li::before,
-.plan ul li .plan-node:hover+.plan ul .plan ul::before {
-	border-color: #008CAF
-}
-
-
 /*
 	MENU
 */
 .menu {
 	width: 210px;
-	height: 222px;
+	height: 250px;
 	position: absolute;
 	font-size: 12px;
 	top: 115px;

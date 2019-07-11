@@ -19,6 +19,11 @@ ul ul::before {
 	width: 0
 }
 
+/* css fix when using different recursion */
+ul li:last-child:not(:first-child) ul{
+	margin-left: -4px;
+}
+
 ul li {
 	float: left;
 	text-align: center;

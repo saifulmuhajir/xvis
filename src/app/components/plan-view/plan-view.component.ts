@@ -44,7 +44,8 @@ export class PlanViewComponent implements OnInit {
       planningTime: this.rootContainer['Planning Time'] || 0,
       maxRows: this.rootContainer[this._planService.MAXIMUM_ROWS_PROP] || 0,
       maxCost: this.rootContainer[this._planService.MAXIMUM_COSTS_PROP] || 0,
-      maxDuration: this.rootContainer[this._planService.MAXIMUM_DURATION_PROP] || 0
+      maxDuration: this.rootContainer[this._planService.MAXIMUM_DURATION_PROP] || 0,
+      maxCpu: this.rootContainer[this._planService.MAXIMUM_CPU_PROP] || 0
     };
   }
 

@@ -10,14 +10,16 @@ export class PlanService {
     FIELDS = 'fields';
     CONDITION = 'condition';
     TABLE = 'table';
+    CPU_COST = 'cpu cost';
+    ROW_COUNT = 'rowcount';
 
     // plan property keys
     NODE_TYPE_PROP = 'relOp';
-    ACTUAL_ROWS_PROP = 'rowcount'; // maybe rows cost
+    ACTUAL_ROWS_PROP = 'rows cost';
     PLAN_ROWS_PROP = 'Plan Rows';
-    ACTUAL_TOTAL_TIME_PROP = 'rows cost'; // was "Actual Total Time"
+    ACTUAL_TOTAL_TIME_PROP = 'Actual Total Time';
     ACTUAL_LOOPS_PROP = 'Actual Loops';
-    TOTAL_COST_PROP = 'io cost'; // was: "Total Cost"
+    TOTAL_COST_PROP = 'io cost';
     PLANS_PROP = 'inputs';
     RELATION_NAME_PROP = 'Relation Name';
     SCHEMA_PROP = 'Schema';
@@ -34,12 +36,15 @@ export class PlanService {
     COSTLIEST_NODE_PROP = '*Costiest Node (by cost)';
     LARGEST_NODE_PROP = '*Largest Node (by rows)';
     SLOWEST_NODE_PROP = '*Slowest Node (by duration)';
+    MOST_CPU_NODE_PROP = '*Most Cpu Prop';
 
     MAXIMUM_COSTS_PROP = '*Most Expensive Node (cost)';
     MAXIMUM_ROWS_PROP = '*Largest Node (rows)';
     MAXIMUM_DURATION_PROP = '*Slowest Node (time)';
+    MAXIMUM_CPU_PROP = '*Most Cpu Node';
     ACTUAL_DURATION_PROP = '*Actual Duration';
     ACTUAL_COST_PROP = '*Actual Cost';
+    ACTUAL_CPU_PROP = 'Actual Cpu';
     PLANNER_ESTIMATE_FACTOR = '*Planner Row Estimate Factor';
     PLANNER_ESIMATE_DIRECTION = '*Planner Row Estimate Direction';
 
@@ -53,6 +58,7 @@ export class PlanService {
     private _maxRows = 0;
     private _maxCost = 0;
     private _maxDuration = 0;
+    private _maxCpu = 0;
 
     getPlans(): Array<IPlan> {
         const plans: Array<IPlan> = [];
@@ -101,6 +107,7 @@ export class PlanService {
         plan.content[this.MAXIMUM_ROWS_PROP] = this._maxRows;
         plan.content[this.MAXIMUM_COSTS_PROP] = this._maxCost;
         plan.content[this.MAXIMUM_DURATION_PROP] = this._maxDuration;
+        plan.content[this.MAXIMUM_CPU_PROP] = this._maxCpu;
 
         this.findOutlierNodes(plan.content.Plan);
 
@@ -117,7 +124,7 @@ export class PlanService {
 
     // recursively walk down the plan to compute various metrics
     processNode(node) {
-        // this.calculatePlannerEstimate(node);
+        this.calculatePlannerEstimate(node);
         this.calculateActuals(node);
 
         _.each(node, (value, key) => {
@@ -138,9 +145,11 @@ export class PlanService {
         if (key === this.ACTUAL_COST_PROP && this._maxCost < value) {
             this._maxCost = value;
         }
-
         if (key === this.ACTUAL_DURATION_PROP && this._maxDuration < value) {
             this._maxDuration = value;
+        }
+        if (key === this.ACTUAL_CPU_PROP && this._maxCpu < value) {
+            this._maxCpu = value;
         }
     }
 
@@ -158,6 +167,9 @@ export class PlanService {
         if (node[this.ACTUAL_DURATION_PROP] === this._maxDuration && this._maxDuration > 0) {
             node[this.SLOWEST_NODE_PROP] = true;
         }
+        if (node[this.ACTUAL_CPU_PROP] === this._maxCpu && this._maxCpu > 0) {
+            node[this.MOST_CPU_NODE_PROP] = true;
+        }
 
         _.each(node, (value, key) => {
             if (key === this.PLANS_PROP) {
@@ -172,6 +184,7 @@ export class PlanService {
     calculateActuals(node) {
         node[this.ACTUAL_DURATION_PROP] = node[this.ACTUAL_TOTAL_TIME_PROP];
         node[this.ACTUAL_COST_PROP] = node[this.TOTAL_COST_PROP];
+        node[this.ACTUAL_CPU_PROP] = node[this.CPU_COST];
 
         // console.log (node);
         _.each(node.Plans, subPlan => {
@@ -195,12 +208,15 @@ export class PlanService {
     // figure out order of magnitude by which the planner mis-estimated how many rows would be
     // invloved in this node
     calculatePlannerEstimate(node) {
-        node[this.PLANNER_ESTIMATE_FACTOR] = node[this.ACTUAL_ROWS_PROP] / node[this.PLAN_ROWS_PROP];
+        node[this.PLANNER_ESTIMATE_FACTOR] = node[this.ROW_COUNT] / node[this.ACTUAL_ROWS_PROP];
         node[this.PLANNER_ESIMATE_DIRECTION] = EstimateDirection.under;
+        if ( node[this.ROW_COUNT] === node[this.ACTUAL_ROWS_PROP] ){
+            node[this.PLANNER_ESIMATE_DIRECTION] = EstimateDirection.equal;
+        }
 
         if (node[this.PLANNER_ESTIMATE_FACTOR] < 1) {
             node[this.PLANNER_ESIMATE_DIRECTION] = EstimateDirection.over;
-            node[this.PLANNER_ESTIMATE_FACTOR] = node[this.PLAN_ROWS_PROP] / node[this.ACTUAL_ROWS_PROP];
+            node[this.PLANNER_ESTIMATE_FACTOR] = node[this.ACTUAL_ROWS_PROP] / node[this.ROW_COUNT];
         }
     }
 }

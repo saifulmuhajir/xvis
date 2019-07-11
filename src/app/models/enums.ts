@@ -1,13 +1,14 @@
 export class HighlightType {
     static NONE = 'none';
-    static DURATION = 'duration';
-    static ROWS = 'rows';
+    static CPU = 'cpu cost';
+    static ROWS = 'row cost';
     static COST = 'io cost';
 }
 
 export enum EstimateDirection {
     over,
-    under
+    under,
+    equal
 }
 
 export class ViewMode {
